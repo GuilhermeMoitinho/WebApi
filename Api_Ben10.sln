@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api_Ben10", "ApiBen10\Api_Ben10.csproj", "{7242306A-BB53-456E-B760-761E94AD8520}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7242306A-BB53-456E-B760-761E94AD8520}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7242306A-BB53-456E-B760-761E94AD8520}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7242306A-BB53-456E-B760-761E94AD8520}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7242306A-BB53-456E-B760-761E94AD8520}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2C6988B2-7AD6-4A8B-AA9F-79F69D67F2ED}
+	EndGlobalSection
+EndGlobal
