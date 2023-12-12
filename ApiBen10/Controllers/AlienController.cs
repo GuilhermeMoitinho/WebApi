@@ -7,6 +7,7 @@ using ApiBen10.Application.DTO;
 using ApiBen10.Application.ServiceResponse;
 using ApiBen10.Domain.Entities;
 using ApiBen10.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiBen10.Controllers
@@ -22,6 +23,7 @@ namespace ApiBen10.Controllers
             _alienapplication = alienapplication;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> ObterTodos(int posicao = 0, int pegar = 5)
         {
@@ -35,6 +37,7 @@ namespace ApiBen10.Controllers
             return Ok(servico);   
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> ObterProdutoPorId(Guid id)
         {
@@ -61,6 +64,7 @@ namespace ApiBen10.Controllers
             return Ok(retorno);
         }
 
+        [Authorize]
         [HttpPost]
          public async Task<IActionResult> Adicionar(AlienPostDTO alienPostDto)
          {
@@ -90,6 +94,7 @@ namespace ApiBen10.Controllers
             return CreatedAtAction("ObterProdutoPorId", "Alien", new { id = Alien.Id }, retorno);
          }
 
+        [Authorize]
         [HttpPut("{id}")]
          public async Task<IActionResult> EditarAlien(AlienPostDTO alienPostDto, Guid id)
          {
@@ -107,6 +112,8 @@ namespace ApiBen10.Controllers
                 return NoContent();   
          }
 
+
+        [Authorize]
         [HttpDelete("{id}")]
          public async Task<IActionResult> RemoverAlien(Guid id)
          {
