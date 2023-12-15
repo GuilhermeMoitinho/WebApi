@@ -17,4 +17,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Alien.Application\Alien.Application.csproj" />
+  </ItemGroup>
+
 </Project>

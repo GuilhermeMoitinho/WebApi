@@ -7,6 +7,7 @@ using ApiBen10.DataContext;
 using ApiBen10.Domain.Entities;
 using ApiBen10.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Aliens = ApiBen10.Domain.Entities;
 
 namespace Application.Services
 {
@@ -19,7 +20,7 @@ namespace Application.Services
             _alienservice = alienservcie;
         }
 
-        public async Task Adicionar(Alien alien)
+        public async Task Adicionar(Aliens.Alien alien)
         {
             _alienservice.Add(alien);
             await _alienservice.SaveChangesAsync();
@@ -27,7 +28,7 @@ namespace Application.Services
             await Task.CompletedTask;
         }
 
-        public async Task EditarAlien(Alien alienEditado, Guid id)
+        public async Task EditarAlien(Aliens.Alien alienEditado, Guid id)
         {
             var EncontrarId = _alienservice.Aliens.Find(id);
 
@@ -39,12 +40,12 @@ namespace Application.Services
             await _alienservice.SaveChangesAsync();
         }
 
-        public async Task<Alien> ObterProdutoPorId(Guid id)
+        public async Task<Aliens.Alien> ObterProdutoPorId(Guid id)
         {
             return await _alienservice.Aliens.FindAsync(id);
         }
 
-        public async Task<IEnumerable<Alien>> ObterTodos(int peginaNumeros, int quantNumeros)
+        public async Task<IEnumerable<Aliens.Alien>> ObterTodos(int peginaNumeros, int quantNumeros)
         {
             var TodosAliens = await _alienservice.Aliens
 

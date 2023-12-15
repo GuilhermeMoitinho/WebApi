@@ -4,14 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using ApiBen10.Domain.Entities;
 using Application.DTO;
+using Aliens = ApiBen10.Domain.Entities;
 
 namespace Application.AliensExtensions
 {
     public static class AlienExtensions
     {
-        public static Alien ParaAlienDomainDTO(this AlienPostDTO alienpostdto)
+        public static Aliens.Alien ParaAlienDomainDTO(this AlienPostDTO alienpostdto)
         {
-            return new Alien
+            return new Aliens.Alien
             {
                 HorarioDeCadastro = DateTime.Now,
                 NomeAlien = alienpostdto.NomeAlien,
@@ -19,7 +20,7 @@ namespace Application.AliensExtensions
             };
         }
 
-        public static AlienGetDTO ParaAlienGetDTO(this Alien alien)
+        public static AlienGetDTO ParaAlienGetDTO(this Aliens.Alien alien)
         {
             return new AlienGetDTO
             {
@@ -30,7 +31,7 @@ namespace Application.AliensExtensions
             };
         }
 
-        public static IEnumerable<AlienGetDTO> ParaAliensGetDto(this IEnumerable<Alien> aliens)
+        public static IEnumerable<AlienGetDTO> ParaAliensGetDto(this IEnumerable<Aliens.Alien> aliens)
         {
             return aliens.Select(alien => alien.ParaAlienGetDTO()).ToList();
         }

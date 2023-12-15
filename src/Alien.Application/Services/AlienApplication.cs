@@ -4,6 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Aliens = ApiBen10.Domain.Entities;
+
+
+
 
 
 namespace Services
@@ -17,22 +21,22 @@ namespace Services
             _alienservice = alienservice;
         }
 
-        public async Task Adicionar(Alien produto)
+        public async Task Adicionar(Aliens.Alien produto)
         {
             await _alienservice.Adicionar(produto);
         }
 
-        public async Task EditarAlien(Alien alienEditado, Guid id)
+        public async Task EditarAlien(Aliens.Alien alienEditado, Guid id)
         {
             await _alienservice.EditarAlien(alienEditado, id);
         }
 
-        public async Task<Alien> ObterProdutoPorId(Guid id)
+        public async Task<Aliens.Alien> ObterProdutoPorId(Guid id)
         {
             return await _alienservice.ObterProdutoPorId(id);
         }
 
-        public async Task<IEnumerable<Alien>> ObterTodos(int peginaNumeros, int quantNumeros)
+        public async Task<IEnumerable<Aliens.Alien>> ObterTodos(int peginaNumeros, int quantNumeros)
         {
             return await _alienservice.ObterTodos(peginaNumeros, quantNumeros);
         }
