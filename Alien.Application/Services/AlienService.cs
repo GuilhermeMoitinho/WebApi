@@ -8,7 +8,7 @@ using ApiBen10.Domain.Entities;
 using ApiBen10.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace ApiBen10.Application.Services
+namespace Application.Services
 {
     public class AlienService : IAlienService
     {
@@ -44,13 +44,13 @@ namespace ApiBen10.Application.Services
             return await _alienservice.Aliens.FindAsync(id);
         }
 
-        public async Task<List<Alien>> ObterTodos(int peginaNumeros, int quantNumeros)
+        public async Task<IEnumerable<Alien>> ObterTodos(int peginaNumeros, int quantNumeros)
         {
             var TodosAliens = await _alienservice.Aliens
 
             .Skip(peginaNumeros * quantNumeros)
             .Take(quantNumeros)
-            .ToListAsync(); 
+            .ToListAsync();
 
             return TodosAliens;
         }

@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ApiBen10.Application.DTO;
 using ApiBen10.Domain.Entities;
+using Application.DTO;
 
-namespace ApiBen10.Application.AliensExtensions
+namespace Application.AliensExtensions
 {
     public static class AlienExtensions
     {
@@ -24,13 +24,13 @@ namespace ApiBen10.Application.AliensExtensions
             return new AlienGetDTO
             {
                 HorarioDeCadastro = alien.HorarioDeCadastro,
-                NomeAlien = alien.NomeAlien,  
+                NomeAlien = alien.NomeAlien,
                 NumeroDoAlien = alien.NumeroDoAlien,
                 Id = alien.Id
             };
         }
 
-        public static List<AlienGetDTO> ParaAliensGetDto(this List<Alien> aliens)
+        public static IEnumerable<AlienGetDTO> ParaAliensGetDto(this IEnumerable<Alien> aliens)
         {
             return aliens.Select(alien => alien.ParaAlienGetDTO()).ToList();
         }

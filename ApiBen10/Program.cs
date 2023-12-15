@@ -1,7 +1,5 @@
 using Api_Ben10.Auth;
-using ApiBen10.Application.Services;
-using ApiBen10.DataContext;
-using ApiBen10.Interfaces;
+using Application.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -13,12 +11,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddDbContext<AppDbContext>(op => op.UseSqlServer(builder.Configuration.GetConnectionString("ConexaoPadrao")));
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
-builder.Services.AddScoped<IAlienService, AlienService>();
-builder.Services.AddScoped<IAlienApplication, AlienApplication>();
+builder.Services.AddControllers();
+builder.Services.AddRegisteredServices(builder.Configuration);
 
 var key = Encoding.ASCII.GetBytes(Key.Secret);
 
@@ -82,6 +77,13 @@ builder.Services.AddSwaggerGen(options =>
     
 
 var app = builder.Build();
+
+app.UseCors(options =>
+{
+    options.AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

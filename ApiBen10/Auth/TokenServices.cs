@@ -3,12 +3,14 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Aliens = ApiBen10.Domain.Entities;
+
 
 namespace Api_Ben10.Auth
 {
-    public class TokenServices
+    public static class TokenServices
     {
-        public static string GenerateToken(Alien user)
+        public static string GenerateToken(Aliens.Alien user)
         {
             var secretKey = Key.Secret;
             var expirationTimeInHours = 48;

@@ -1,7 +1,12 @@
 ﻿using Api_Ben10.Auth;
+using Api_Ben10.Domain.Entities;
 using ApiBen10.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ApiBen10.Domain.Entities;
+using Aliens = ApiBen10.Domain.Entities;
+
+
 
 namespace Api_Ben10.Controllers
 {
@@ -10,11 +15,11 @@ namespace Api_Ben10.Controllers
     public class AuthController : ControllerBase
     {
         [HttpPost]
-        public IActionResult Auth(string username, string password)
+        public IActionResult Auth([FromBody] AuthAlien model)
         {
-            if (username == "guilherme" && password == "123456")
+            if (model.Username == "guilherme" && model.Password == "123456")
             {
-                var token = TokenServices.GenerateToken(new Alien());
+                var token = TokenServices.GenerateToken(new Aliens.Alien());
                 return Ok(token);
             }
 

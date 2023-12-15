@@ -11,7 +11,7 @@ namespace ApiBen10.Interfaces
     {
         Task Adicionar(Alien alien);
         Task<Alien> ObterProdutoPorId(Guid id);
-        Task<List<Alien>> ObterTodos(int PeginaNumeros, int QuantNumeros);
+        Task<IEnumerable<Alien>> ObterTodos(int PeginaNumeros, int QuantNumeros);
         Task EditarAlien(Alien alienEditado, Guid id);
         Task RemoverAlien(Guid idRemovido);
     }

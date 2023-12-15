@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace ApiBen10.Domain.Entities
+ namespace ApiBen10.Domain.Entities
 {
 
     public abstract class Entity
@@ -12,7 +7,7 @@ namespace ApiBen10.Domain.Entities
 
         public Entity()
         {
-            Id= Guid.NewGuid();
+            Id = Guid.NewGuid();
         }
     }
 

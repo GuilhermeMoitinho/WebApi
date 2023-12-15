@@ -1,14 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ApiBen10.Application.AliensExtensions;
-using ApiBen10.Application.DTO;
-using ApiBen10.Application.ServiceResponse;
-using ApiBen10.Domain.Entities;
+using Application.DTO;
 using ApiBen10.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ServiceResponse;
+using Application.AliensExtensions;
+using Aliens = ApiBen10.Domain.Entities;
+
 
 namespace ApiBen10.Controllers
 {
@@ -29,20 +26,20 @@ namespace ApiBen10.Controllers
         {
             var Aliens = await _alienapplication.ObterTodos(posicao, pegar);
             var servico = new ServicoDeResposta<AlienGetDTO>();
-            
+
             servico.Sucesso = true;
             servico.Dados = Aliens.ParaAliensGetDto();
             servico.Mensagem = "Seus Aliens foram requisitados";
 
-            return Ok(servico);   
+            return Ok(servico);
         }
 
         [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> ObterProdutoPorId(Guid id)
         {
-            if(id == Guid.Empty)
-                return BadRequest(new ServicoDeResposta<Alien>()
+            if (id == Guid.Empty)
+                return BadRequest(new ServicoDeResposta<Aliens.Alien>()
                 {
                     Sucesso = false,
                     Dados = null,
@@ -51,11 +48,11 @@ namespace ApiBen10.Controllers
 
             var AlienId = await _alienapplication.ObterProdutoPorId(id);
 
-            if(AlienId is null) return NotFound();
+            if (AlienId is null) return NotFound();
 
             var AlienIdDTO = AlienId.ParaAlienGetDTO();
 
-            var retorno = new ServicoDeResposta<Alien>(){
+            var retorno = new ServicoDeResposta<Aliens.Alien>() {
                 Sucesso = true,
                 Dados = AlienIdDTO,
                 Mensagem = "Seu Alien foi requisitado"
@@ -66,13 +63,13 @@ namespace ApiBen10.Controllers
 
         [Authorize]
         [HttpPost]
-         public async Task<IActionResult> Adicionar(AlienPostDTO alienPostDto)
+        public async Task<IActionResult> Adicionar([FromBody] AlienPostDTO alienPostDto)
          {
              var validarDTO = new AlienPostValidacao().Validate(alienPostDto);
 
              if(!validarDTO.IsValid)
              {
-                var erro = new ServicoDeResposta<Alien>()
+                var erro = new ServicoDeResposta<Aliens.Alien>()
                 {
                     Sucesso = false,
                     Dados = null,
@@ -85,7 +82,7 @@ namespace ApiBen10.Controllers
 
              await _alienapplication.Adicionar(Alien);
 
-              var retorno = new ServicoDeResposta<Alien>(){
+              var retorno = new ServicoDeResposta<Aliens.Alien>(){
                 Sucesso = true,
                 Dados = new {id = Alien.Id},
                 Mensagem = "Seu Alien foi adicionado"
@@ -99,7 +96,7 @@ namespace ApiBen10.Controllers
          public async Task<IActionResult> EditarAlien(AlienPostDTO alienPostDto, Guid id)
          {
               if(id == Guid.Empty)
-                return BadRequest(new ServicoDeResposta<Alien>()
+                return BadRequest(new ServicoDeResposta<Aliens.Alien>()
                 {
                     Sucesso = false,
                     Dados = null,
@@ -118,7 +115,7 @@ namespace ApiBen10.Controllers
          public async Task<IActionResult> RemoverAlien(Guid id)
          {
               if(id == Guid.Empty)
-                return BadRequest(new ServicoDeResposta<Alien>()
+                return BadRequest(new ServicoDeResposta<Aliens.Alien>()
                 {
                     Sucesso = false,
                     Dados = null,
