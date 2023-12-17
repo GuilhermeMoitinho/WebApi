@@ -5,10 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using ServiceResponse;
 using Application.AliensExtensions;
 using Aliens = ApiBen10.Domain.Entities;
-
+using Alien.Identity.Constants;
+using Alien.WebAPI.Attributes;
 
 namespace ApiBen10.Controllers
 {
+
     [ApiController]
     [Route("api/aliens")]
     public class AlienController : ControllerBase
@@ -34,7 +36,7 @@ namespace ApiBen10.Controllers
             return Ok(servico);
         }
 
-        [Authorize]
+     
         [HttpGet("{id}")]
         public async Task<IActionResult> ObterProdutoPorId(Guid id)
         {
@@ -61,7 +63,6 @@ namespace ApiBen10.Controllers
             return Ok(retorno);
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Adicionar([FromBody] AlienPostDTO alienPostDto)
          {
@@ -91,7 +92,6 @@ namespace ApiBen10.Controllers
             return CreatedAtAction("ObterProdutoPorId", "Alien", new { id = Alien.Id }, retorno);
          }
 
-        [Authorize]
         [HttpPut("{id}")]
          public async Task<IActionResult> EditarAlien(AlienPostDTO alienPostDto, Guid id)
          {
@@ -110,7 +110,6 @@ namespace ApiBen10.Controllers
          }
 
 
-        [Authorize]
         [HttpDelete("{id}")]
          public async Task<IActionResult> RemoverAlien(Guid id)
          {

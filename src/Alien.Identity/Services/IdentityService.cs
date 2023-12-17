@@ -53,9 +53,9 @@ namespace Alien.Identity.Services
         {
             var result = await _signInManager.PasswordSignInAsync(usuarioLogin.Email, usuarioLogin.Senha, false, true);
             if (result.Succeeded)
-                return await GerarCredenciais(usuarioLogin.Email);
+                return await GerarToken(usuarioLogin.Email);
 
-            var usuarioLoginResponse = new UsuarioLoginResponse();
+            var usuarioLoginResponse = new UsuarioLoginResponse(result.Succeeded);
             if (!result.Succeeded)
             {
                 if (result.IsLockedOut)
@@ -71,58 +71,35 @@ namespace Alien.Identity.Services
             return usuarioLoginResponse;
         }
 
-        public async Task<UsuarioLoginResponse> LoginSemSenha(string usuarioId)
-        {
-            var usuarioLoginResponse = new UsuarioLoginResponse();
-            var usuario = await _userManager.FindByIdAsync(usuarioId);
-
-            if (await _userManager.IsLockedOutAsync(usuario))
-                usuarioLoginResponse.AdicionarErro("Essa conta está bloqueada");
-            else if (!await _userManager.IsEmailConfirmedAsync(usuario))
-                usuarioLoginResponse.AdicionarErro("Essa conta precisa confirmar seu e-mail antes de realizar o login");
-
-            if (usuarioLoginResponse.Sucesso)
-                return await GerarCredenciais(usuario.Email);
-
-            return usuarioLoginResponse;
-        }
-
-        private async Task<UsuarioLoginResponse> GerarCredenciais(string email)
+        private async Task<UsuarioLoginResponse> GerarToken(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
-            var accessTokenClaims = await ObterClaims(user, adicionarClaimsUsuario: true);
-            var refreshTokenClaims = await ObterClaims(user, adicionarClaimsUsuario: false);
+            var tokenClaims = await ObterClaims(user);
 
-            var dataExpiracaoAccessToken = DateTime.Now.AddSeconds(_jwtOptions.AccessTokenExpiration);
-            var dataExpiracaoRefreshToken = DateTime.Now.AddSeconds(_jwtOptions.RefreshTokenExpiration);
+            var dataExpiracao = DateTime.Now.AddSeconds(_jwtOptions.Expiration);
 
-            var accessToken = GerarToken(accessTokenClaims, dataExpiracaoAccessToken);
-            var refreshToken = GerarToken(refreshTokenClaims, dataExpiracaoRefreshToken);
-
-            return new UsuarioLoginResponse
-            (
-                sucesso: true,
-                accessToken: accessToken,
-                refreshToken: refreshToken
-            );
-        }
-
-        private string GerarToken(IEnumerable<Claim> claims, DateTime dataExpiracao)
-        {
             var jwt = new JwtSecurityToken(
                 issuer: _jwtOptions.Issuer,
                 audience: _jwtOptions.Audience,
-                claims: claims,
+                claims: tokenClaims,
                 notBefore: DateTime.Now,
                 expires: dataExpiracao,
                 signingCredentials: _jwtOptions.SigningCredentials);
 
-            return new JwtSecurityTokenHandler().WriteToken(jwt);
+            var token = new JwtSecurityTokenHandler().WriteToken(jwt);
+
+            return new UsuarioLoginResponse
+            (
+                sucesso: true,
+                token: token,
+                dataExpiracao: dataExpiracao
+            );
         }
 
-        private async Task<IList<Claim>> ObterClaims(IdentityUser user, bool adicionarClaimsUsuario)
+        private async Task<IList<Claim>> ObterClaims(IdentityUser user)
         {
-            var claims = new List<Claim>();
+            var claims = await _userManager.GetClaimsAsync(user);
+            var roles = await _userManager.GetRolesAsync(user);
 
             claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id));
             claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
@@ -130,16 +107,8 @@ namespace Alien.Identity.Services
             claims.Add(new Claim(JwtRegisteredClaimNames.Nbf, DateTime.Now.ToString()));
             claims.Add(new Claim(JwtRegisteredClaimNames.Iat, DateTime.Now.ToString()));
 
-            if (adicionarClaimsUsuario)
-            {
-                var userClaims = await _userManager.GetClaimsAsync(user);
-                var roles = await _userManager.GetRolesAsync(user);
-
-                claims.AddRange(userClaims);
-
-                foreach (var role in roles)
-                    claims.Add(new Claim("role", role));
-            }
+            foreach (var role in roles)
+                claims.Add(new Claim("role", role));
 
             return claims;
         }
