@@ -5,6 +5,7 @@ using ServiceResponse;
 using Application.AliensExtensions;
 using Aliens = ApiBen10.Domain.Entities;
 using ApiBen10.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ApiBen10.Controllers
 {
@@ -20,6 +21,7 @@ namespace ApiBen10.Controllers
             _alienapplication = alienapplication;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> ObterTodos(int posicao = 0, int pegar = 5)
         {

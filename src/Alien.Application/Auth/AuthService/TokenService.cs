@@ -5,6 +5,7 @@ using System.Text;
 using Alien.Application.Auth.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 
 namespace Alien.Application.Auth.AuthService
 {
