@@ -9,10 +9,10 @@ namespace ApiBen10.Interfaces
 {
     public interface IAlienService
     {
-        Task Adicionar(Alien alien);
-        Task<Alien> ObterProdutoPorId(Guid id);
-        Task<IEnumerable<Alien>> ObterTodos(int PeginaNumeros, int QuantNumeros);
-        Task EditarAlien(Alien alienEditado, Guid id);
+        Task Adicionar(AlienModel alien);
+        Task<AlienModel> ObterProdutoPorId(Guid id);
+        Task<IEnumerable<AlienModel>> ObterTodos(int PeginaNumeros, int QuantNumeros);
+        Task EditarAlien(AlienModel alienEditado, Guid id);
         Task RemoverAlien(Guid idRemovido);
     }
 }

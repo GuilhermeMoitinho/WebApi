@@ -10,9 +10,9 @@ namespace Application.AliensExtensions
 {
     public static class AlienExtensions
     {
-        public static Aliens.Alien ParaAlienDomainDTO(this AlienPostDTO alienpostdto)
+        public static Aliens.AlienModel ParaAlienDomainDTO(this AlienPostDTO alienpostdto)
         {
-            return new Aliens.Alien
+            return new Aliens.AlienModel
             {
                 HorarioDeCadastro = DateTime.Now,
                 NomeAlien = alienpostdto.NomeAlien,
@@ -20,7 +20,7 @@ namespace Application.AliensExtensions
             };
         }
 
-        public static AlienGetDTO ParaAlienGetDTO(this Aliens.Alien alien)
+        public static AlienGetDTO ParaAlienGetDTO(this Aliens.AlienModel alien)
         {
             return new AlienGetDTO
             {
@@ -31,7 +31,7 @@ namespace Application.AliensExtensions
             };
         }
 
-        public static IEnumerable<AlienGetDTO> ParaAliensGetDto(this IEnumerable<Aliens.Alien> aliens)
+        public static IEnumerable<AlienGetDTO> ParaAliensGetDto(this IEnumerable<Aliens.AlienModel> aliens)
         {
             return aliens.Select(alien => alien.ParaAlienGetDTO()).ToList();
         }

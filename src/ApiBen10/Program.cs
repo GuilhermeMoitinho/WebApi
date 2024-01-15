@@ -1,3 +1,4 @@
+using Alien.Application.Auth.Configuration;
 using Alien.WebAPI.Extensions;
 using Application.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -15,7 +16,25 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddRegisteredServices(builder.Configuration);
 builder.Services.AddSwagger();
-builder.Services.AddAuthentication(builder.Configuration);
+
+var key = Encoding.ASCII.GetBytes(Settings.Key);
+
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(x =>
+{
+    x.RequireHttpsMetadata = false;
+    x.SaveToken = true;
+    x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+});
 
 
 var app = builder.Build();

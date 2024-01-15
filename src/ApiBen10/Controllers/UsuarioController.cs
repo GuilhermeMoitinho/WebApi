@@ -1,9 +1,13 @@
-﻿using Alien.Application.DTO.Request;
+﻿using Alien.Application.Auth.AuthService;
+using Alien.Application.DTO.Request;
 using Alien.Application.Interfaces;
 using Alien.Application.ServiceResponse;
+using Alien.Infrastructure.DataContext;
 using Alien.WebAPI.Controllers.Shared;
+using Api_Ben10.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ServiceResponse;
 using System.Net;
 
 namespace Alien.WebAPI.Controllers
@@ -12,37 +16,40 @@ namespace Alien.WebAPI.Controllers
     [ApiController]
     public class UsuarioController : ControllerBase
     {
-        private IIdentityService _identityService;
+        private readonly UserAppDbContext _context;
+        private readonly TokenService _AuthService;
 
-        public UsuarioController(IIdentityService identityService) =>
-            _identityService = identityService;
+        public UsuarioController(UserAppDbContext context, TokenService authService)
+        {
+            _context = context;
+            _AuthService = authService;
+        }
 
         [HttpPost("cadastro")]
-        public async Task<ActionResult<UsuarioCadastroResponse>> Cadastrar(UsuarioCadastroRequest usuarioCadastro)
+        public async Task<ActionResult<UsuarioCadastroResponse>> Cadastrar(AlienUser usuarioCadastro)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
+            if (usuarioCadastro is null) return BadRequest();
 
-            var resultado = await _identityService.CadastrarUsuario(usuarioCadastro);
-            if (resultado.Sucesso)
-                return Ok(resultado);
-            else if (resultado.Erros.Count > 0)
-                return BadRequest(resultado);
+           await _context.AddAsync(usuarioCadastro); 
+           await _context.SaveChangesAsync();
 
-            return StatusCode(StatusCodes.Status500InternalServerError);
+            var tokenUser = _AuthService.GenereteToken(usuarioCadastro);
+
+            var response = new ServicoDeResposta<AlienUser>
+            {
+                Sucesso = true,
+                Dados = usuarioCadastro.Id,
+                Mensagem = "Tudo Certo",
+                Token = tokenUser
+            };
+
+            return Ok(response);
         }
 
         [HttpPost("login")]
         public async Task<ActionResult<UsuarioCadastroResponse>> Login(UsuarioLoginRequest usuarioLogin)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
-            var resultado = await _identityService.Login(usuarioLogin);
-            if (resultado.Sucesso)
-                return Ok(resultado);
-
-            return Unauthorized(resultado);
+            return Ok();
         }
     }
 }

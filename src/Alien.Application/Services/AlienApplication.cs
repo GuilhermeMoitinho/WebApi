@@ -21,22 +21,22 @@ namespace Services
             _alienservice = alienservice;
         }
 
-        public async Task Adicionar(Aliens.Alien produto)
+        public async Task Adicionar(Aliens.AlienModel produto)
         {
             await _alienservice.Adicionar(produto);
         }
 
-        public async Task EditarAlien(Aliens.Alien alienEditado, Guid id)
+        public async Task EditarAlien(Aliens.AlienModel alienEditado, Guid id)
         {
             await _alienservice.EditarAlien(alienEditado, id);
         }
 
-        public async Task<Aliens.Alien> ObterProdutoPorId(Guid id)
+        public async Task<Aliens.AlienModel> ObterProdutoPorId(Guid id)
         {
             return await _alienservice.ObterProdutoPorId(id);
         }
 
-        public async Task<IEnumerable<Aliens.Alien>> ObterTodos(int peginaNumeros, int quantNumeros)
+        public async Task<IEnumerable<Aliens.AlienModel>> ObterTodos(int peginaNumeros, int quantNumeros)
         {
             return await _alienservice.ObterTodos(peginaNumeros, quantNumeros);
         }

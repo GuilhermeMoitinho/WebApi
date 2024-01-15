@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using ApiBen10.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,6 +10,6 @@ namespace ApiBen10.DataContext
         { 
         }
 
-        public DbSet<Alien> Aliens { get; set; }
+        public DbSet<AlienModel> Aliens { get; set; }
     }
 }

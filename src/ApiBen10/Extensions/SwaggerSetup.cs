@@ -11,17 +11,10 @@ namespace Alien.WebAPI.Extensions
         public static void AddSwagger(this IServiceCollection services)
         {
             services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen(options =>
+            services.AddSwaggerGen(c =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Version = "v1",
-                    Title = "Alien API",
-                    Description = "Interface de Usuário para a Alien API.",
-                    Contact = new OpenApiContact { Name = "Guilherme Moitinho", Email = "guilhermemoitinho3165@gmail.com" }
-                });
 
-                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
                     Name = "Authorization",
                     Type = SecuritySchemeType.ApiKey,
@@ -31,7 +24,7 @@ namespace Alien.WebAPI.Extensions
                     Description = "Autorização JWT (header) usando Bearer. \r\n\r\n Digite 'Bearer' [espaço] e o token em seguida.\r\n\r\nExemplo: \"Bearer c76n21m890edf2i9mci\"",
                 });
 
-                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {
                         new OpenApiSecurityScheme
@@ -45,6 +38,8 @@ namespace Alien.WebAPI.Extensions
                         Array.Empty<string>()
                     }
                 });
+
+
             });
         }
     }

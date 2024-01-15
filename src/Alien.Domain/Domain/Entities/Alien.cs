@@ -3,7 +3,7 @@
 
     public abstract class Entity
     {
-         public Guid Id { get; private set; }
+        public Guid Id { get; private set; }
 
         public Entity()
         {
@@ -11,7 +11,7 @@
         }
     }
 
-    public class Alien : Entity
+    public class AlienModel : Entity
     {
         public string NomeAlien { get; set; }
         public int NumeroDoAlien { get; set; }

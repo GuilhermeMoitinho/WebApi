@@ -5,5 +5,6 @@ namespace ServiceResponse
         public bool Sucesso { get; set; }
         public object Dados { get; set; }
         public object Mensagem { get; set; }
+        public string Token { get; set; }
     }
 }
